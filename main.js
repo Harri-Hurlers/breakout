@@ -7,6 +7,7 @@ class Main {
     this.y = 40
     this.fps = 60
     this.Paddle = new Paddle(this.ctx, 250, 250, 40, 10)
+    this.paddleSpeed = 5
   }
 
   initialize() {
@@ -16,36 +17,44 @@ class Main {
   }
 
   draw(main) {
-    console.log('Hello', main.x, main.y)
-    this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    this.ctx.font = '20px Arial'
-    this.ctx.fillStyle = '#000000'
-    this.ctx.fillText('hello', main.x, main.x)
+    main.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    main.ctx.font = '20px Arial'
+    main.ctx.fillStyle = '#000000'
+    main.ctx.fillText('hello', main.x, main.y)
+
+    main.moveRight()
+    main.moveLeft()
+  }
+
+  moveRight(){
+    if(this.rightPressed){
+      this.x += this.paddleSpeed
+    }
+  }
+
+  moveLeft(){
+    if(this.leftPressed){
+      this.x -= this.paddleSpeed
+    }
   }
 
   keyDown(event) {
     if (event.code === 'ArrowRight') {
-      this.rightPressed = false
-      console.log('Pressing Right Down in class', this.x)
+      this.rightPressed = true
     }
 
     if (event.code === 'ArrowLeft') {
-      this.leftPressed = false
-      console.log('Pressing Left Down in class', this.x)
+      this.leftPressed = true
     }
   }
 
   keyUp(event) {
     if (event.code === 'ArrowRight') {
       this.rightPressed = false
-      this.x += 1
-      console.log('Pressing Right Up in class', this.x)
     }
 
     if (event.code === 'ArrowLeft') {
       this.leftPressed = false
-      this.x -= 1
-      console.log('Pressing Left Up in class', this.x)
     }
   }
 }
