@@ -9,9 +9,9 @@ class Paddle {
   }
 
   draw() {
-    this.ctx.font = '20px Arial'
-    this.ctx.fillStyle = '#000000'
-    this.ctx.fillText('hello', this.x, this.y)
+    this.ctx.beginPath()
+    this.ctx.rect(this.x, this.y, this.width, this.height)
+    this.ctx.stroke()
   }
 
   move(direction) {
@@ -23,8 +23,8 @@ class Paddle {
     if (this.x <= 0) {
       this.x = 0
     }
-    if (this.x >= this.ctx.canvas.width) {
-      this.x = 640
+    if (this.x + this.width >= this.ctx.canvas.width) {
+      this.x = this.ctx.canvas.width - this.width
     }
   }
 }
