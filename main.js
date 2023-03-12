@@ -1,56 +1,51 @@
 class Main {
-  constructor(){
-    this.canvas = document.getElementById("canvas")
-    this.ctx = this.canvas.getContext("2d")
+  constructor(ctx) {
+    this.ctx = ctx
     this.rightPressed = false
     this.leftPressed = false
     this.x = 40
-    this.y = 40  
+    this.y = 40
+    this.fps = 60
+    this.Paddle = new Paddle(this.ctx, 250, 250, 40, 10)
   }
 
-  run() {
-    // if (this.rightPressed === true){
-    //   this.x + 1
-    // }
-    // if (this.leftPressed === true){
-    //   this.x - 1
-    // }
+  initialize() {
+    document.addEventListener('keydown', this.keyDownHandler, false)
+    document.addEventListener('keyup', this.keyUpHandler, false)
+    setInterval(this.draw, 1000 / this.fps, this)
   }
 
-  draw(){
-    console.log(this.x, this.y)
-    document.addEventListener("keydown", this.keyDownHandler(), false)
-    document.addEventListener("keyup", this.keyUpHandler, false)
-
-    this.ctx.font = "20px Arial"
-    this.ctx.fillStyle = "#000000"
-    this.ctx.fillText("hello", this.x, this.y)
+  draw(main) {
+    console.log('Hello', main.x, main.y)
+    this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    this.ctx.font = '20px Arial'
+    this.ctx.fillStyle = '#000000'
+    this.ctx.fillText('hello', main.x, main.x)
   }
 
-  keyDownHandler(key, x) {
-    if (key.code === "ArrowRight") {
-      this.rightPressed = true
-      console.log("Pressing Right Down", x)
-      this.x += 1
-    }
-    
-    if (key.code === "ArrowLeft") {
-      this.leftPressed = true
-      console.log("Pressed Left Down")
-      this.x -= 1
-    }
-  }
-
-  
-  keyUpHandler(key) {
-    if (key.code === "ArrowRight") {
+  keyDown(event) {
+    if (event.code === 'ArrowRight') {
       this.rightPressed = false
-      console.log("Pressing Right Up", this.x)
+      console.log('Pressing Right Down in class', this.x)
     }
-    
-    if (key.code === "ArrowLeft") {
+
+    if (event.code === 'ArrowLeft') {
       this.leftPressed = false
-      console.log("Pressing Left Up", this.x)
+      console.log('Pressing Left Down in class', this.x)
+    }
+  }
+
+  keyUp(event) {
+    if (event.code === 'ArrowRight') {
+      this.rightPressed = false
+      this.x += 1
+      console.log('Pressing Right Up in class', this.x)
+    }
+
+    if (event.code === 'ArrowLeft') {
+      this.leftPressed = false
+      this.x -= 1
+      console.log('Pressing Left Up in class', this.x)
     }
   }
 }
