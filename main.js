@@ -6,8 +6,7 @@ class Main {
     this.x = 40
     this.y = 40
     this.fps = 60
-    this.Paddle = new Paddle(this.ctx, 250, 250, 40, 10)
-    this.paddleSpeed = 5
+    this.Paddle = new Paddle(this.ctx, 250, 250, 40, 10, 3)
   }
 
   initialize() {
@@ -16,23 +15,16 @@ class Main {
 
   draw(main) {
     main.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    main.Paddle.draw()
     main.ctx.font = '20px Arial'
     main.ctx.fillStyle = '#000000'
     main.ctx.fillText('hello', main.x, main.y)
 
-    main.moveRight()
-    main.moveLeft()
-  }
-
-  moveRight() {
-    if (this.rightPressed) {
-      this.x += this.paddleSpeed
+    if (main.rightPressed) {
+      main.Paddle.move(1)
     }
-  }
-
-  moveLeft() {
-    if (this.leftPressed) {
-      this.x -= this.paddleSpeed
+    if (main.leftPressed) {
+      main.Paddle.move(-1)
     }
   }
 
