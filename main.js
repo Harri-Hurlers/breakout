@@ -9,19 +9,23 @@ class Main {
     this.y = 40
     this.fps = 60
     this.Paddle = new Paddle(this.ctx, 290, 460, 60, 10, 3)
+    this.brick = new Brick({
+      x: 250,
+      y: 70
+    })
   }
 
   initialize() {
     setInterval(this.draw, 1000 / this.fps, this)
+    
   }
 
   draw(main) {
     main.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     main.Paddle.draw()
-    main.ctx.font = '20px Arial'
-    main.ctx.fillStyle = '#000000'
-    main.ctx.fillText('hello', main.x, main.y)
-
+    // main.ctx.font = '20px Arial'
+    // main.ctx.fillStyle = '#000000'
+    // main.ctx.fillText('hello', main.x, main.y)
     if (main.rightPressed) {
       main.Paddle.move(1)
     }
@@ -34,6 +38,7 @@ class Main {
     if (main.downPressed) {
       main.Paddle.move2(1)
     }
+    main.brick.draw(main.ctx)
   }
 
   keyDown(event) {
