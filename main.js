@@ -3,10 +3,12 @@ class Main {
     this.ctx = ctx
     this.rightPressed = false
     this.leftPressed = false
+    this.upPressed = false
+    this.downPressed = false
     this.x = 40
     this.y = 40
     this.fps = 60
-    this.Paddle = new Paddle(this.ctx, 250, 250, 40, 10, 3)
+    this.Paddle = new Paddle(this.ctx, 290, 460, 60, 10, 3)
   }
 
   initialize() {
@@ -26,15 +28,26 @@ class Main {
     if (main.leftPressed) {
       main.Paddle.move(-1)
     }
+    if (main.upPressed) {
+      main.Paddle.move2(-1)
+    }
+    if (main.downPressed) {
+      main.Paddle.move2(1)
+    }
   }
 
   keyDown(event) {
     if (event.code === 'ArrowRight') {
       this.rightPressed = true
     }
-
     if (event.code === 'ArrowLeft') {
       this.leftPressed = true
+    }
+    if (event.code === 'ArrowUp') {
+      this.upPressed = true
+    }
+    if (event.code === 'ArrowDown') {
+      this.downPressed = true
     }
   }
 
@@ -42,9 +55,14 @@ class Main {
     if (event.code === 'ArrowRight') {
       this.rightPressed = false
     }
-
     if (event.code === 'ArrowLeft') {
       this.leftPressed = false
+    }
+    if (event.code === 'ArrowUp') {
+      this.upPressed = false
+    }
+    if (event.code === 'ArrowDown') {
+      this.downPressed = false
     }
   }
 }
