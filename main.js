@@ -9,7 +9,7 @@ class Main {
     this.y = 40;
     this.fps = 60;
     this.Paddle = new Paddle(this.ctx, 290, 460, 60, 10, 3);
-    this.Ball = new Ball(this.ctx, 320, 100, 50, 4);
+    this.Ball = new Ball(this.ctx, 320, 100, 5, 4);
   }
 
   initialize() {

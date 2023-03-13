@@ -14,20 +14,29 @@ class Ball {
     this.move();
   }
 
-  move(speed) {
-    if (this.x >= this.ctx.canvas.width) {
-      this.x -= this.speed;
+  move() {
+    let posSpeed = +Math.abs(this.speed);
+    let negSpeed = -Math.abs(this.speed);
+
+    this.x = this.x + posSpeed;
+    this.y = this.y + posSpeed;
+
+    if (this.x == this.ctx.canvas.width) {
+      this.x = this.x + negSpeed;
     }
+
     if (this.x <= 0) {
-      this.x += this.speed;
+      this.x = this.x + posSpeed;
     }
 
     if (this.y >= this.ctx.canvas.height) {
-      this.y -= this.speed;
+      this.y = this.y + negSpeed;
     }
 
     if (this.y <= 0) {
-      this.y += this.speed;
+      this.y = this.y + posSpeed;
     }
+
+    console.log(this.x, this.y);
   }
 }
