@@ -16,26 +16,27 @@
     <script src="main.js"></script>
     <script src="rect.js"></script>
     <script src="paddle.js"></script>
+    <script src="ball.js"></script>
     <script>
-      canvas = document.getElementById('canvas')
-      ctx = this.canvas.getContext('2d')
-      main = new Main(ctx)
-      main.initialize()
+      canvas = document.getElementById("canvas");
+      ctx = this.canvas.getContext("2d");
+      main = new Main(ctx);
+      main.initialize();
 
       document.addEventListener(
-        'keydown',
+        "keydown",
         function keyDownHandler(event) {
-          main.keyDown(event)
+          main.keyDown(event);
         },
         false
-      )
+      );
       document.addEventListener(
-        'keyup',
+        "keyup",
         function keyUpHandler(event) {
-          main.keyUp(event)
+          main.keyUp(event);
         },
         false
-      )
+      );
     </script>
   </body>
 </html>
