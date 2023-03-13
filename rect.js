@@ -8,12 +8,15 @@ class Rect {
     this._bottom = this.y + height
     this._left = this.x
     this._right = this.x + width
+    this._centerX = this.x + this.width / 2
+    this._centerY = this.y + this.height / 2
   }
 
   set x(x) {
     this._x = x
-    this.left = this.x
-    this.right = this.x + this.width
+    this._left = this._x
+    this._right = this._x + this.width
+    this._centerX = this._x + this.width / 2
   }
 
   get x() {
@@ -22,8 +25,9 @@ class Rect {
 
   set y(y) {
     this._y = y
-    this.top = this.y
-    this.bottom = this.y + this.height
+    this._top = this._y
+    this._bottom = this._y + this.height
+    this._centerY = this._y + this.height / 2
   }
 
   get y() {
@@ -32,8 +36,8 @@ class Rect {
 
   set y(y) {
     this._y = y
-    this.top = this.y
-    this.bottom = this.y + this.height
+    this._top = this._y
+    this._bottom = this._y + this.height
   }
 
   get y() {
@@ -74,5 +78,13 @@ class Rect {
 
   get top() {
     return this._top
+  }
+
+  get centerX() {
+    return this._centerX
+  }
+
+  get centerY() {
+    return this._centerY
   }
 }
