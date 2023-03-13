@@ -8,8 +8,6 @@ class Paddle {
   }
 
   draw() {
-    this.frameCount++
-    // this.ctx.beginPath()
     this.ctx.fillStyle = this.color
     this.ctx.fillRect(
       this.rect.x,
