@@ -12,17 +12,18 @@ class Main {
       ctx: this.ctx,
       x: 290,
       y: 460,
-      width: 65, 
+      width: 65,
       height: 13,
-      speed: 10
+      speed: 10,
     })
     this.brick = new Brick({
       x: 250,
       y: 370,
-      health: 5
+      health: 5,
     })
     this.brickLayout = new BrickLayout({})
     this.collisionDetected = false
+    this.Ball = new Ball(this.ctx, 320, 100, 5, 4)
   }
 
   initialize() {
@@ -31,16 +32,16 @@ class Main {
 
   draw(main) {
     main.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    if (main.collisionDetected){
+    if (main.collisionDetected) {
       main.ctx.fillStyle = "red"
       main.ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     }
     main.brickLayout.drawLayout(main)
     main.brickLayout.checkCollision(main)
     main.Paddle.draw()
+    main.Ball.draw(main.ctx)
     // main.brick.draw(ctx)
-  
-    
+
     // main.ctx.font = '20px Arial'
     // main.ctx.fillStyle = '#000000'
     // main.ctx.fillText('hello', main.x, main.y)
@@ -56,35 +57,34 @@ class Main {
     if (main.downPressed) {
       main.Paddle.moveVertical(1)
     }
-    
   }
 
   keyDown(event) {
-    if (event.code === 'ArrowRight') {
+    if (event.code === "ArrowRight") {
       this.rightPressed = true
     }
-    if (event.code === 'ArrowLeft') {
+    if (event.code === "ArrowLeft") {
       this.leftPressed = true
     }
-    if (event.code === 'ArrowUp') {
+    if (event.code === "ArrowUp") {
       this.upPressed = true
     }
-    if (event.code === 'ArrowDown') {
+    if (event.code === "ArrowDown") {
       this.downPressed = true
     }
   }
 
   keyUp(event) {
-    if (event.code === 'ArrowRight') {
+    if (event.code === "ArrowRight") {
       this.rightPressed = false
     }
-    if (event.code === 'ArrowLeft') {
+    if (event.code === "ArrowLeft") {
       this.leftPressed = false
     }
-    if (event.code === 'ArrowUp') {
+    if (event.code === "ArrowUp") {
       this.upPressed = false
     }
-    if (event.code === 'ArrowDown') {
+    if (event.code === "ArrowDown") {
       this.downPressed = false
     }
   }
