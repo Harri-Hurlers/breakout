@@ -8,37 +8,55 @@ class Main {
     this.x = 40
     this.y = 40
     this.fps = 60
-    this.Paddle = new Paddle(this.ctx, 290, 460, 60, 10, 3)
+    this.Paddle = new Paddle({
+      ctx: this.ctx,
+      x: 290,
+      y: 460,
+      width: 65, 
+      height: 13,
+      speed: 10
+    })
     this.brick = new Brick({
       x: 250,
-      y: 70
+      y: 370,
+      health: 5
     })
+    this.brickLayout = new BrickLayout({})
+    this.collisionDetected = false
   }
 
   initialize() {
     setInterval(this.draw, 1000 / this.fps, this)
-    
   }
 
   draw(main) {
     main.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    if (main.collisionDetected){
+      main.ctx.fillStyle = "red"
+      main.ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    }
+    main.brickLayout.drawLayout(main)
+    main.brickLayout.checkCollision(main)
     main.Paddle.draw()
+    // main.brick.draw(ctx)
+  
+    
     // main.ctx.font = '20px Arial'
     // main.ctx.fillStyle = '#000000'
     // main.ctx.fillText('hello', main.x, main.y)
     if (main.rightPressed) {
-      main.Paddle.move(1)
+      main.Paddle.moveHorizontal(1)
     }
     if (main.leftPressed) {
-      main.Paddle.move(-1)
+      main.Paddle.moveHorizontal(-1)
     }
     if (main.upPressed) {
-      main.Paddle.move2(-1)
+      main.Paddle.moveVertical(-1)
     }
     if (main.downPressed) {
-      main.Paddle.move2(1)
+      main.Paddle.moveVertical(1)
     }
-    main.brick.draw(main.ctx)
+    
   }
 
   keyDown(event) {

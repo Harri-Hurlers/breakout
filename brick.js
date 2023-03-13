@@ -10,23 +10,23 @@ class Brick {
     strokeSize = 5,
     health = 4,
   }){
-    this.ctx = ctx
-    this.x = x
-    this.y = y
-    this.width = width
-    this.height = height
+    this.x = x + Math.round(strokeSize / 2)
+    this.y = y + Math.round(strokeSize / 2)
+    this.width = Math.round(width - strokeSize)
+    this.height = Math.round(height - strokeSize)
     this.health = health
     this.fillColor = fillColor
     this.strokeColor = strokeColor
     this.strokeSize = strokeSize
     this.radius = radius
+    this.collisionRect = new Rect(this.x, this.y, this.width, this.height)
   }
 
   draw(ctx){
     this.roundRect(
       ctx, 
-      this.x, 
-      this.y, 
+      this.x,
+      this.y,
       this.x + this.width,
       this.y + this.height,
       this.radius
@@ -53,6 +53,22 @@ class Brick {
     ctx.strokeStyle = this.getHealthColor().stroke
     ctx.lineWidth = this.strokeSize
     ctx.stroke()
+  }
+
+  isCollision(main){
+    let collider
+    if(!main.Ball) {
+      collider = main.Paddle.rect
+    } else {
+      collider = main.Ball.rect
+    }
+    
+    const checkCollision = collider.top <= this.collisionRect.bottom && collider.bottom >= this.collisionRect.top && collider.left <= this.collisionRect.right && collider.right >= this.collisionRect.left
+
+    main.collisionDetected = checkCollision
+    if(checkCollision) {
+      this.health--
+    }
   }
 
   getHealthColor(){

@@ -1,13 +1,17 @@
 class Paddle {
-  constructor(ctx, x, y, width, height, speed) {
+  constructor({ ctx, x, y, width, height, speed, color = "black" }) {
     this.rect = new Rect(x, y, width, height)
     this.ctx = ctx
     this.speed = speed
+    this.frameCount = 0
+    this.color = color
   }
 
   draw() {
-    this.ctx.beginPath()
-    this.ctx.strokeRect(
+    this.frameCount++
+    // this.ctx.beginPath()
+    this.ctx.fillStyle = this.color
+    this.ctx.fillRect(
       this.rect.x,
       this.rect.y,
       this.rect.width,
@@ -15,12 +19,12 @@ class Paddle {
     )
   }
 
-  move(direction) {
+  moveHorizontal(direction) {
     this.rect.x += this.speed * direction
     this.checkBoundary()
   }
 
-  move2(direction) {
+  moveVertical(direction) {
     this.rect.y += this.speed * direction
     this.checkBoundary()
   }
