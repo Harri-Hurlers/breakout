@@ -1,5 +1,5 @@
 class Brick {
-  constructor({
+  constructor( ctx, {
     x = 0,
     y = 0,
     width = 50,
@@ -10,69 +10,79 @@ class Brick {
     strokeSize = 5,
     health = 4,
   }) {
+    this.ctx = ctx
     this.x = x + Math.round(strokeSize / 2)
     this.y = y + Math.round(strokeSize / 2)
     this.width = Math.round(width - strokeSize)
     this.height = Math.round(height - strokeSize)
+    this.left = this.x
+    this.right = this.x + this.width
+    this.top = this.y
+    this.bottom = this.y + this.height
     this.health = health
     this.fillColor = fillColor
     this.strokeColor = strokeColor
     this.strokeSize = strokeSize
     this.radius = radius
-    this.collisionRect = new Rect(this.x, this.y, this.width, this.height)
   }
 
-  draw(ctx) {
-    this.roundRect(
-      ctx,
-      this.x,
-      this.y,
-      this.x + this.width,
-      this.y + this.height,
-      this.radius
-    )
+  draw(ball) {
+    if (this.health >= 1) {
+      // this.checkCollision(ball)
+      this.roundRect(
+        this.x,
+        this.y,
+        this.x + this.width,
+        this.y + this.height,
+        this.radius
+      )
+    }
   }
 
-  roundRect(ctx, x0, y0, x1, y1, r) {
+  roundRect(x0, y0, x1, y1, r) {
     const w = x1 - x0
     const h = y1 - y0
     if (r > w / 2) r = w / 2
     if (r > h / 2) r = h / 2
-    ctx.beginPath()
-    ctx.moveTo(x1 - r, y0)
-    ctx.quadraticCurveTo(x1, y0, x1, y0 + r)
-    ctx.lineTo(x1, y1 - r)
-    ctx.quadraticCurveTo(x1, y1, x1 - r, y1)
-    ctx.lineTo(x0 + r, y1)
-    ctx.quadraticCurveTo(x0, y1, x0, y1 - r)
-    ctx.lineTo(x0, y0 + r)
-    ctx.quadraticCurveTo(x0, y0, x0 + r, y0)
-    ctx.closePath()
-    ctx.fillStyle = this.getHealthColor().fill
-    ctx.fill()
-    ctx.strokeStyle = this.getHealthColor().stroke
-    ctx.lineWidth = this.strokeSize
-    ctx.stroke()
+    this.ctx.beginPath()
+    this.ctx.moveTo(x1 - r, y0)
+    this.ctx.quadraticCurveTo(x1, y0, x1, y0 + r)
+    this.ctx.lineTo(x1, y1 - r)
+    this.ctx.quadraticCurveTo(x1, y1, x1 - r, y1)
+    this.ctx.lineTo(x0 + r, y1)
+    this.ctx.quadraticCurveTo(x0, y1, x0, y1 - r)
+    this.ctx.lineTo(x0, y0 + r)
+    this.ctx.quadraticCurveTo(x0, y0, x0 + r, y0)
+    this.ctx.closePath()
+    this.ctx.fillStyle = this.getHealthColor().fill
+    this.ctx.strokeStyle = this.getHealthColor().stroke
+    this.ctx.fill()
+    this.ctx.lineWidth = this.strokeSize
+    this.ctx.stroke()
   }
 
-  isCollision(main) {
-    let collider
-    if (main.Ball) {
-      collider = main.Paddle.rect
-    } else {
-      collider = main.Ball.rect
+  takeDamage(damage){
+    this.health = this.health - damage
+    if(this.health <= 0){
+      this.x = 0
+      this.y = 0
+      this.height = 0
+      this.width = 0
     }
+  }
 
-    const checkCollision =
-      collider.top <= this.collisionRect.bottom &&
-      collider.bottom >= this.collisionRect.top &&
-      collider.left <= this.collisionRect.right &&
-      collider.right >= this.collisionRect.left
-
-    main.collisionDetected = checkCollision
-    if (checkCollision) {
-      this.health--
-    }
+  checkCollision(ball) {
+    if (ball.right === this.left ||
+        ball.left === this.right ||
+        ball.top === this.bottom ||
+        ball.bottom === this.top)
+      {
+        // this.takeDamage(1)
+        // ball.xSpeed = -ball.xSpeed
+        return true
+      }
+      
+      return false
   }
 
   getHealthColor() {

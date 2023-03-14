@@ -1,45 +1,50 @@
 class BrickLayout {
-  constructor({
+  constructor(ctx, {
     bricksPerRow = 10,
     brickRows = 5,
   }){
+    this.ctx = ctx
     this.bricksPerRow = bricksPerRow
     this.brickRows = brickRows
     this.isLayoutDrawn = false
     this.layoutGrid = new Array(this.bricksPerRow)
+    this.maxBrickHealth = 5
+    this.savedGrid = undefined
   }
 
-  drawLayout(main){
-    const brickWidth = main.ctx.canvas.width / this.bricksPerRow
-    const brickHeight = (main.ctx.canvas.height / 3) / this.brickRows
-    let brickYOffset = 0
+  draw(ball){
+    if(!this.savedGrid) return this.createGrid()
+    for(let i = 0; i < this.brickRows; i++){
+      for(let j = 0; j < this.bricksPerRow; j++){
+        const brick = this.savedGrid[i][j]
+        brick.draw(ball)
+        // brick.checkCollision(ball)
+      }
+    }
+  }
+
+  createGrid() {
+    const brickWidth = ctx.canvas.width / this.bricksPerRow
+    const brickHeight = (ctx.canvas.height / 3) / this.brickRows
+    let brickY = 0
     
     for(let i = 0; i < this.brickRows; i++) {
-      let brickXOffset = 0
+      let brickX = 0
       this.layoutGrid[i] = new Array(this.bricksPerRow)
 
       for(let j = 0; j < this.bricksPerRow; j++) {
-        const brick = new Brick({
-          x: brickXOffset,
-          y: brickYOffset,
+        const brick = new Brick(this.ctx, {
+          x: brickX,
+          y: brickY,
           width: brickWidth,
           height: brickHeight,
           health: 5 - i
         })
-        brick.draw(main.ctx)
         this.layoutGrid[i][j] = brick
-        brickXOffset = brickXOffset + brickWidth
+        brickX = brickX + brickWidth
       }
-      brickYOffset = brickYOffset + brickHeight
+      brickY = brickY + brickHeight
     }
-  }
-
-  checkCollision(main) {    
-    for(let i = 0; i < this.brickRows; i++){
-      for(let j = 0; j < this.bricksPerRow; j++){
-        const brick = this.layoutGrid[i][j]
-        brick.isCollision(main)
-      }
-    }
+    this.savedGrid = this.layoutGrid
   }
 }

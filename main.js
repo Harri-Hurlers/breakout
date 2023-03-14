@@ -16,35 +16,37 @@ class Main {
       height: 13,
       speed: 10,
     })
-    this.brick = new Brick({
-      x: 250,
-      y: 370,
-      health: 5,
-    })
-    this.brickLayout = new BrickLayout({})
+    this.brickLayout = new BrickLayout(this.ctx, {  bricksPerRow: 10, brickRows: 5,})
     this.collisionDetected = false
-    this.Ball = new Ball(this.ctx, 320, 100, 5, 4)
+    this.Ball = new Ball(ctx, {
+      x: 240, 
+      y: 360, 
+      radius: 5, 
+      speed: 5,
+    })
   }
 
   initialize() {
+    main.brickLayout.createGrid(main.Ball)
     setInterval(this.draw, 1000 / this.fps, this)
   }
 
   draw(main) {
-    main.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    if (main.collisionDetected) {
-      main.ctx.fillStyle = "red"
-      main.ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    this.ctx.font = "18px Arial"
+    this.ctx.fillStyle = "blue"
+    this.ctx.fillText(`${main.Ball.x}, ${main.Ball.y}`, 560, 440)
+    this.ctx.fillStyle = "black"
+    this.ctx.fillText(`${main.Paddle.rect.x}, ${main.Paddle.rect.y}`, 560, 460)
+    if (this.collisionDetected) {
+      this.ctx.fillStyle = "red"
+      this.ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     }
-    main.brickLayout.drawLayout(main)
-    main.brickLayout.checkCollision(main)
+    main.brickLayout.draw(main.Ball)
     main.Paddle.draw()
-    main.Ball.draw(main.ctx)
-    // main.brick.draw(ctx)
+    main.Ball.draw(main)
+    // this.brick.draw(ctx)
 
-    // main.ctx.font = '20px Arial'
-    // main.ctx.fillStyle = '#000000'
-    // main.ctx.fillText('hello', main.x, main.y)
     if (main.rightPressed) {
       main.Paddle.moveHorizontal(1)
     }
