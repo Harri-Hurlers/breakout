@@ -52,8 +52,8 @@ class Ball {
     }
 
     if (this.y + this.ySpeed >= this.ctx.canvas.height) {
-      // main.isGameOver = true
-      this.ySpeed = -this.ySpeed
+      main.isGameOver = true
+      // this.ySpeed = -this.ySpeed
     }
   }
 
