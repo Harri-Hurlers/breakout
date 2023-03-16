@@ -10,15 +10,20 @@ class BrickLayout {
     this.layoutGrid = new Array(this.bricksPerRow)
     this.maxBrickHealth = 5
     this.savedGrid = undefined
+    this.rowClearCounter = this.bricksPerRow
   }
 
-  draw(ball){
+  draw(main){
     if(!this.savedGrid) return this.createGrid()
     for(let i = 0; i < this.brickRows; i++){
+      // if(this.rowClearCounter <= 0) main.updateScore(5)
+      this.rowClearCounter = this.bricksPerRow
       for(let j = 0; j < this.bricksPerRow; j++){
         const brick = this.savedGrid[i][j]
-        brick.draw(ball)
-        // brick.checkCollision(ball)
+        brick.draw()
+        if(brick.health === 0) {
+          this.updateClearCounter()
+        }
       }
     }
   }
@@ -46,5 +51,9 @@ class BrickLayout {
       brickY = brickY + brickHeight
     }
     this.savedGrid = this.layoutGrid
+  }
+
+  updateClearCounter(){
+    this.rowClearCounter--
   }
 }

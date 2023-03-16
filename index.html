@@ -5,14 +5,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Breakout</title>
+    <style>
+      @font-face {
+        font-family: 'A-OTF Shin Go Pro B';
+        font-style: normal;
+        font-weight: normal;
+        src: local('A-OTF Shin Go Pro B'), url('AOTFShinGoProBold.woff') format('woff');
+      }
+      body {
+        margin: 0;
+      }
+
+      canvas {
+        border: 1px red solid;
+        background-color: #191919;
+      }
+
+      .fullscreen {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .fullscreen canvas {
+        object-fit: contain;
+        max-height: 100%;
+        max-width: 100%;
+        flex: fit-content;
+      }
+    </style>
   </head>
   <body>
-    <canvas
-      id="canvas"
-      width="640"
-      height="480"
-      style="border: 1px red solid"
-    ></canvas>
+    <div class="fullscreen">
+      <canvas
+        id="canvas"
+        width="640"
+        height="480"
+      ></canvas>
+    </div>
     <script src="main.js"></script>
     <script src="rect.js"></script>
     <script src="paddle.js"></script>
@@ -20,22 +56,42 @@
     <script src="brickLayout.js"></script>
     <script src="ball.js"></script>
     <script>
-      canvas = document.getElementById("canvas")
+      const canvas = document.getElementById("canvas")
+      canvas.clientHeight = window.innerHeight
+      canvas.clientWidth = window.innerWidth
       ctx = this.canvas.getContext("2d")
       main = new Main(ctx)
       main.initialize()
 
-      document.addEventListener(
+      canvas.addEventListener(
         "keydown",
         function keyDownHandler(event) {
           main.keyDown(event)
         },
         false
       )
-      document.addEventListener(
+      canvas.addEventListener(
         "keyup",
         function keyUpHandler(event) {
           main.keyUp(event)
+        },
+        false
+      )
+
+      canvas.addEventListener(
+        "mousemove",
+        function mouseMoveHandler(event) {
+          if(Math.abs(event.movementX) < 500){
+            main.mouseMove(canvas, event.movementX)
+          }
+        },
+        false
+      )
+
+      canvas.addEventListener(
+        "mousedown",
+        function mouseDownHandler(event) {
+          main.mouseDown(event.offsetX, event.offsetY)
         },
         false
       )

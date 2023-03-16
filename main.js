@@ -7,45 +7,59 @@ class Main {
     this.downPressed = false
     this.x = 40
     this.y = 40
-    this.fps = 60
+    this.fps = 120
+    this.isGameOver = false
+    this.score = 0
+    this.collisionDetected = false
+    this.mouseClickCoord = {
+      x: 0,
+      y: 0
+    }
+    this.playAgainCoords = {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    }
     this.Paddle = new Paddle({
       ctx: this.ctx,
       x: 290,
-      y: 460,
+      y: 440,
       width: 65,
       height: 13,
-      speed: 10,
+      speed: 1,
+      color: 'white'
     })
     this.brickLayout = new BrickLayout(this.ctx, {  bricksPerRow: 10, brickRows: 5,})
-    this.collisionDetected = false
     this.Ball = new Ball(ctx, {
       x: 240, 
       y: 360, 
       radius: 5, 
-      speed: 5,
+      xSpeed: 2,
+      ySpeed: 4,
+      color: 'cyan'
     })
   }
 
   initialize() {
-    main.brickLayout.createGrid(main.Ball)
+    main.brickLayout.createGrid()
     setInterval(this.draw, 1000 / this.fps, this)
   }
 
   draw(main) {
     this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    this.ctx.font = "18px Arial"
-    this.ctx.fillStyle = "blue"
-    this.ctx.fillText(`${main.Ball.x}, ${main.Ball.y}`, 560, 440)
-    this.ctx.fillStyle = "black"
-    this.ctx.fillText(`${main.Paddle.rect.x}, ${main.Paddle.rect.y}`, 560, 460)
-    if (this.collisionDetected) {
-      this.ctx.fillStyle = "red"
-      this.ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+    
+    main.printScore(main)
+    if(main.isGameOver){
+      main.showGameOver()
+      main.showPlayAgain(300, 250)
+      main.isPlayAgainClicked()
+      return
     }
-    main.brickLayout.draw(main.Ball)
+
+    main.brickLayout.draw(main)
     main.Paddle.draw()
     main.Ball.draw(main)
-    // this.brick.draw(ctx)
 
     if (main.rightPressed) {
       main.Paddle.moveHorizontal(1)
@@ -58,6 +72,61 @@ class Main {
     }
     if (main.downPressed) {
       main.Paddle.moveVertical(1)
+    }
+
+  }
+
+  clearScore(){
+    this.score = 0
+  }
+
+  updateScore(points){
+    this.score = this.score + points
+  }
+
+  printScore(main){
+    main.ctx.font = "38px A-OTF Shin Go Pro B"
+    main.ctx.fillStyle = "white"
+    main.ctx.fillText(main.score, 20, ctx.canvas.height * .96)
+  }
+
+  showGameOver(){
+    document.exitPointerLock();
+    this.ctx.font = "38px A-OTF Shin Go Pro B"
+    this.ctx.fillStyle = "red"
+    this.ctx.fillText('GAME OVER', ctx.canvas.width / 3, ctx.canvas.height / 2)
+
+    
+    // this.ctx.font = "20px A-OTF Shin Go Pro B"
+    // this.ctx.fillStyle = "green"
+    // this.ctx.strokeStyle = "green"
+    // this.ctx.fillText('PLAY', ctx.canvas.width / 2 - 60, ctx.canvas.height - 100)
+    // this.ctx.fillText('AGAIN', ctx.canvas.width / 2 - 65, ctx.canvas.height - 80)
+    // this.ctx.strokeRect(ctx.canvas.width / 2 - 70, ctx.canvas.height - 130, 90, 60)
+  }
+
+  showPlayAgain(x, y){
+    const textX = x + 16
+    const textY = y + 26
+    const buttonW = 95
+    const buttonH = 58
+    this.ctx.font = "20px A-OTF Shin Go Pro B"
+    this.ctx.fillStyle = "green"
+    this.ctx.strokeStyle = "green"
+    this.ctx.fillText('PLAY', textX, textY)
+    this.ctx.fillText('AGAIN', textX - 7, textY + 20)
+    this.ctx.strokeRect(x, y, buttonW, buttonH)
+    this.playAgainCoords = {
+      x,
+      y,
+      buttonW,
+      buttonH
+    }
+  }
+
+  isPlayAgainClicked(){
+    if(this.mouseClickCoord.x >= this.playAgainCoords.x && this.mouseClickCoord.x <= this.playAgainCoords.width && this.mouseClickCoord.y >= this.playAgainCoords.y && this.mouseClickCoord.y <= this.playAgainCoords.height){
+      this.isGameOver = false
     }
   }
 
@@ -89,5 +158,19 @@ class Main {
     if (event.code === "ArrowDown") {
       this.downPressed = false
     }
+  }
+
+  mouseMove(canvas, movementX){
+    const rect = canvas.getBoundingClientRect()
+    let mouseX = movementX - rect.left
+    main.Paddle.moveHorizontal(mouseX)
+  }
+
+  mouseDown(x, y){
+    canvas.requestPointerLock()
+    
+    const mouseX = x - canvas.offsetLeft
+    const mouseY = y - canvas.offsetTop
+    this.mouseClickCoord = {x: mouseX, y: mouseY, cosL: canvas.offsetLeft, cosT: canvas.offsetTop}
   }
 }

@@ -7,7 +7,7 @@ class Brick {
     radius = 3,
     fillColor = "#00ff00",
     strokeColor = "#0000ff",
-    strokeSize = 5,
+    strokeSize = 0,
     health = 4,
   }) {
     this.ctx = ctx
@@ -26,7 +26,7 @@ class Brick {
     this.radius = radius
   }
 
-  draw(ball) {
+  draw() {
     if (this.health >= 1) {
       // this.checkCollision(ball)
       this.roundRect(
@@ -58,7 +58,7 @@ class Brick {
     this.ctx.strokeStyle = this.getHealthColor().stroke
     this.ctx.fill()
     this.ctx.lineWidth = this.strokeSize
-    this.ctx.stroke()
+    // this.ctx.stroke()
   }
 
   takeDamage(damage){
@@ -71,19 +71,19 @@ class Brick {
     }
   }
 
-  checkCollision(ball) {
-    if (ball.right === this.left ||
-        ball.left === this.right ||
-        ball.top === this.bottom ||
-        ball.bottom === this.top)
-      {
-        // this.takeDamage(1)
-        // ball.xSpeed = -ball.xSpeed
-        return true
-      }
+  // checkCollision(ball) {
+  //   if (ball.right === this.left ||
+  //       ball.left === this.right ||
+  //       ball.top === this.bottom ||
+  //       ball.bottom === this.top)
+  //     {
+  //       // this.takeDamage(1)
+  //       // ball.xSpeed = -ball.xSpeed
+  //       return true
+  //     }
       
-      return false
-  }
+  //     return false
+  // }
 
   getHealthColor() {
     switch (this.health) {
