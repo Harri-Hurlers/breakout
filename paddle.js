@@ -2,13 +2,18 @@ class Paddle {
   constructor({ ctx, x, y, width, height, speed, color = "black" }) {
     this.rect = new Rect(x, y, width, height)
     this.ctx = ctx
-    this.speed = speed
+    this.speedDampen = 1
+    this.speed = speed * this.speedDampen
     this.frameCount = 0
     this.color = color
   }
 
   draw() {
     this.ctx.fillStyle = this.color
+    this.ctx.shadowColor = this.color
+    this.ctx.shadowBlur = 10
+    this.ctx.shadowOffsetX = 0
+    this.ctx.shadowOffsetY = 0
     this.ctx.fillRect(
       this.rect.x,
       this.rect.y,

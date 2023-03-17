@@ -24,6 +24,11 @@ class Brick {
     this.strokeColor = strokeColor
     this.strokeSize = strokeSize
     this.radius = radius
+    this.boop0 = new Audio('sounds/D_hi.wav')
+    this.boop1 = new Audio('sounds/E.wav')
+    this.boop2 = new Audio('sounds/F.wav')
+    this.boop3 = new Audio('sounds/G.wav')
+    this.boop4 = new Audio('sounds/A.wav')
   }
 
   draw() {
@@ -56,6 +61,10 @@ class Brick {
     this.ctx.closePath()
     this.ctx.fillStyle = this.getHealthColor().fill
     this.ctx.strokeStyle = this.getHealthColor().stroke
+    this.ctx.shadowColor = this.getHealthColor().glow
+    this.ctx.shadowBlur = 10
+    this.ctx.shadowOffsetX = 0
+    this.ctx.shadowOffsetY = 0
     this.ctx.fill()
     this.ctx.lineWidth = this.strokeSize
     // this.ctx.stroke()
@@ -63,11 +72,17 @@ class Brick {
 
   takeDamage(damage){
     this.health = this.health - damage
+    if(this.health === 1) this.boop1.play()
+    if(this.health === 2) this.boop2.play()
+    if(this.health === 3) this.boop3.play()
+    if(this.health === 4) this.boop4.play()
+    
     if(this.health <= 0){
       this.x = 0
       this.y = 0
       this.height = 0
       this.width = 0
+      this.boop0.play()
     }
   }
 
@@ -89,27 +104,32 @@ class Brick {
     switch (this.health) {
       case 1: //green
         return {
-          fill: "#66ff66",
+          fill: "#aaffaa",
+          glow: "#66ff66",
           stroke: "#009900",
         }
       case 2: //yellow
-        return {
+      return {
           fill: "#ffff00",
+          glow: "#aaaa00",
           stroke: "#b3b300",
         }
       case 3: //orange
-        return {
-          fill: "#ffcc99",
+        return {          
+          fill: "#ff9933",
+          glow: "#aa5500",
           stroke: "#e67300",
         }
       case 4: //red
         return {
           fill: "#ff0000",
+          glow: "#ff7777",
           stroke: "#800000",
         }
       case 5: //purple
         return {
           fill: "#9966ff",
+          glow: "#7744cc",
           stroke: "#330080",
         }
       default: //black

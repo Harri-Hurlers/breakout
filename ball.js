@@ -19,6 +19,9 @@ class Ball {
     this.xSpeed = xSpeed
     this.ySpeed = -ySpeed
     this.color = color
+    this.speedDampen = 0.15
+    this.wallBoop = new Audio("sounds/E.wav");
+    this.paddleBoop = new Audio("sounds/D.wav");
   }
 
   draw(main) {
@@ -26,6 +29,10 @@ class Ball {
     this.ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI)
     this.ctx.closePath()
     this.ctx.fillStyle = this.color
+    this.ctx.shadowColor = this.color
+    this.ctx.shadowBlur = 10
+    this.ctx.shadowOffsetX = 0
+    this.ctx.shadowOffsetY = 0
     this.ctx.fill()
     this.move()
     this.checkWallCollision(main)
@@ -34,8 +41,8 @@ class Ball {
   }
 
   move(){
-    this.x += this.xSpeed
-    this.y += this.ySpeed
+    this.x += this.xSpeed * this.speedDampen
+    this.y += this.ySpeed * this.speedDampen
     this.left = this.x - this.radius
     this.right = this.x + this.radius
     this.top = this.y - this.radius
@@ -45,15 +52,18 @@ class Ball {
   checkWallCollision(main){
     if(this.x + this.xSpeed >= this.ctx.canvas.width || this.x - this.radius <= 0){
       this.xSpeed = -this.xSpeed
+      this.wallBoop.play();
     }
 
-    if(this.y - this.radius <= 0){
+    if(this.y - this.ySpeed <= 0){
       this.ySpeed = -this.ySpeed
+      this.wallBoop.play(); 
     }
 
     if (this.y + this.ySpeed >= this.ctx.canvas.height) {
-      main.isGameOver = true
-      // this.ySpeed = -this.ySpeed
+      // main.isGameOver = true
+      this.ySpeed = -this.ySpeed
+      this.wallBoop.play(); 
     }
   }
 
@@ -64,7 +74,7 @@ class Ball {
     if(!isCollision) return
     
     this.ySpeed = -this.ySpeed
-
+    this.paddleBoop.play()
     const muliplier = 0.5
     if(this.x >= paddle._centerX) { // Ball hits right side of paddle
       if(Math.sign(this.xSpeed) === -1) {

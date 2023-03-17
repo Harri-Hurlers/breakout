@@ -7,7 +7,7 @@ class Main {
     this.downPressed = false
     this.x = 40
     this.y = 40
-    this.fps = 120
+    // this.fps = 120
     this.isGameOver = false
     this.score = 0
     this.collisionDetected = false
@@ -24,7 +24,7 @@ class Main {
     this.Paddle = new Paddle({
       ctx: this.ctx,
       x: 290,
-      y: 440,
+      y: 400,
       width: 65,
       height: 13,
       speed: 1,
@@ -35,21 +35,21 @@ class Main {
       x: 240, 
       y: 360, 
       radius: 5, 
-      xSpeed: 2,
-      ySpeed: 4,
+      xSpeed: 10,
+      ySpeed: 10,
       color: 'cyan'
     })
   }
 
   initialize() {
     main.brickLayout.createGrid()
-    setInterval(this.draw, 1000 / this.fps, this)
+    // setInterval(this.draw, 1000 / this.fps, this)
   }
 
-  draw(main) {
-    this.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+  draw() {
+    main.ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     
-    main.printScore(main)
+    main.printScore()
     if(main.isGameOver){
       main.showGameOver()
       main.showPlayAgain(300, 250)
@@ -57,7 +57,7 @@ class Main {
       return
     }
 
-    main.brickLayout.draw(main)
+    main.brickLayout.draw()
     main.Paddle.draw()
     main.Ball.draw(main)
 
@@ -73,7 +73,7 @@ class Main {
     if (main.downPressed) {
       main.Paddle.moveVertical(1)
     }
-
+    window.requestAnimationFrame(main.draw)
   }
 
   clearScore(){
@@ -84,10 +84,10 @@ class Main {
     this.score = this.score + points
   }
 
-  printScore(main){
-    main.ctx.font = "38px A-OTF Shin Go Pro B"
-    main.ctx.fillStyle = "white"
-    main.ctx.fillText(main.score, 20, ctx.canvas.height * .96)
+  printScore(){
+    this.ctx.font = "38px A-OTF Shin Go Pro B"
+    this.ctx.fillStyle = "white"
+    this.ctx.fillText(this.score, 20, ctx.canvas.height * .96)
   }
 
   showGameOver(){
@@ -161,9 +161,9 @@ class Main {
   }
 
   mouseMove(canvas, movementX){
-    const rect = canvas.getBoundingClientRect()
-    let mouseX = movementX - rect.left
-    main.Paddle.moveHorizontal(mouseX)
+    // const rect = canvas.getBoundingClientRect()
+    // let mouseX = movementX - rect.left
+    main.Paddle.moveHorizontal(movementX)
   }
 
   mouseDown(x, y){
